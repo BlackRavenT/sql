@@ -11,10 +11,8 @@
 		<TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="23" Margin="10,86,0,0" TextWrapping="Wrap" Text="Выберите файл..." VerticalAlignment="Top" Width="359" />
 		<Label Content="Загрузка данных из Excel в БД" HorizontalAlignment="Left" Height="25" Margin="10,47,0,0" VerticalAlignment="Top" Width="359"/>
 		<Button Content="Загрузка" HorizontalAlignment="Left" Height="20" Margin="385,126,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-		<Button Content="Выгрузка" HorizontalAlignment="Left" Height="20" Margin="385,247,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1" RenderTransformOrigin="0.48,3.3"/>
-		<Label Content="Выгрузка данных из БД в Excel" HorizontalAlignment="Left" Height="24" Margin="10,175,0,0" VerticalAlignment="Top" Width="293"/>
-		<ListBox HorizontalAlignment="Left" Height="20" Margin="10,219,0,0" VerticalAlignment="Top" Width="359">
-			<ListBoxItem Content="ListBoxItem" Selected="ListBoxItem_Selected"/>
-		</ListBox>
+		<Button Content="Выгрузка" HorizontalAlignment="Left" Height="20" Margin="385,215,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1" RenderTransformOrigin="0.48,3.3"/>
+		<Label Content="Выгрузка данных из БД в Excel" HorizontalAlignment="Left" Height="24" Margin="10,197,0,0" VerticalAlignment="Top" Width="293"/>
+		<ComboBox x:Name="boxDataTable" HorizontalAlignment="Left" Height="20" Margin="10,140,0,0" VerticalAlignment="Top" Width="359"/>
 	</Grid>
 </Window>

@@ -42,14 +42,14 @@ namespace WpfApp1
             string sql = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_TYPE != 'VIEW'";
 
             SqlCommand command = new SqlCommand(sql, conn);
-            int i = 0;
+            
             try
             {
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     string table = reader.GetString(0);
-                    lb.ListBoxItem.Item.Insert(i, table);
+                    boxDataTable.Items.Add(table);
                 }
             }
             catch (SqlException ex)
@@ -58,7 +58,7 @@ namespace WpfApp1
             }
             conn.Close();
         }
-
+        //выбор файла
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             /*OpenFileDialog myDialog = new OpenFileDialog();
@@ -77,14 +77,15 @@ namespace WpfApp1
             //    return;
             
         }
-
+        //выгрузка из Excel в БД
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ope = new OpenFileDialog();
             ope.FileName=textBox1.Text;
             string excelFilePath = ope.FileName;
 
-            string ssqltable = "test";
+            //string ssqltable = "test";
+            string ssqltable = boxDataTable.SelectedItem.ToString();
             string myexceldataquery = "select * from [Лист1$]";
 
             try
@@ -127,7 +128,7 @@ namespace WpfApp1
                 /*string query = @"SELECT     Customers.CompanyName, Customers.ContactName, Orders.ShipVia, Orders.Freight, Orders.ShipName, Orders.ShipAddress, Orders.ShipCity, Orders.ShipRegion, Orders.ShipPostalCode, Orders.ShipCountry
                     FROM         Customers INNER JOIN
                       Orders ON Customers.CustomerID = Orders.CustomerID";*/
-                string query = @"SELECT * from dbo.test";
+                string query = @"SELECT * from dbo."+boxDataTable.SelectedItem;
                 SqlCommand comm = new SqlCommand(query, sqlconn);
 
                 sqlconn.Open();
@@ -226,10 +227,7 @@ namespace WpfApp1
             }
         }
 
-        private void ListBoxItem_Selected(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
     }
     
 }
