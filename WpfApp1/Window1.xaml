@@ -1,0 +1,16 @@
+﻿<Window x:Class="WpfApp1.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="Download" Height="344.022" Width="541.304">
+	<Grid>
+		<Button Content="Выгрузка" HorizontalAlignment="Left" Height="20" Margin="385,249,-168,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1" RenderTransformOrigin="0.48,3.3"/>
+		<Label Content="Выгрузка данных из БД в Excel" HorizontalAlignment="Left" Height="24" Margin="10,246,-11,-1" VerticalAlignment="Top" Width="293"/>
+		<ComboBox x:Name="boxDataTable" HorizontalAlignment="Left" Height="20" Margin="10,44,0,0" VerticalAlignment="Top" Width="359" />
+		<Label Content="Выбрать таблицу в БД для дальнейшей работы:" HorizontalAlignment="Left" Height="34" Margin="10,10,0,0" VerticalAlignment="Top" Width="359"/>
+
+	</Grid>
+</Window>

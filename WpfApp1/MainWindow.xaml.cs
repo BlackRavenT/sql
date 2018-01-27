@@ -36,208 +36,24 @@ namespace WpfApp1
         {
             InitializeComponent();
             
-            string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=test;Integrated Security=SSPI";
-            SqlConnection conn = new SqlConnection(ssqlconnectionstring);
-            conn.Open();
-            string sql = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_TYPE != 'VIEW'";
-
-            SqlCommand command = new SqlCommand(sql, conn);
-            
-            try
-            {
-                SqlDataReader reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    string table = reader.GetString(0);
-                    boxDataTable.Items.Add(table);
-                }
-            }
-            catch (SqlException ex)
-            {
-                MessageBox.Show("Ошибка:" + ex);
-            }
-            conn.Close();
+           
         }
-        //выбор файла
-        private void button1_Click(object sender, RoutedEventArgs e)
+        
+
+       
+        //загрузка данных в БД
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            /*OpenFileDialog myDialog = new OpenFileDialog();
-            myDialog.Filter = "Exel Files|*.xls;*.xlsx;*.xlsm";
-            if (myDialog.ShowDialog() == true)
-            {
-                textBox1.Text = myDialog.FileName;
-            }*/
-            OpenFileDialog ope = new OpenFileDialog();
-            ope.Filter = "Exel Files|*.xls;*.xlsx;*.xlsm";
-            if (ope.ShowDialog() == true)
-            {
-                textBox1.Text = ope.FileName;
-            }
-
-            //из выбранной книги выводим все названия листов в combobox
-            Excel.Workbook xlWB;
-            Excel.Application xlApp = new Excel.Application();
-            xlWB = xlApp.Workbooks.Open(textBox1.Text);
-            boxListExcel.Items.Clear(); // очистить combobox 
-            //добавить название листов из книги
-            for (int i=0; i<xlWB.Sheets.Count;i++)
-            {                
-                boxListExcel.Items.Add(xlWB.Worksheets[i+1].Name);
-            }
-
+            UploadWindow upWindow = new UploadWindow();
+            upWindow.Show();
 
         }
-        //выгрузка из Excel в БД
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
-            //  OpenFileDialog ope = new OpenFileDialog();
-            //  ope.FileName=textBox1.Text;
-            //  string excelFilePath = ope.FileName;
-            string excelFilePath = textBox1.Text;
-
-            //string ssqltable = "test";
-            string ssqltable = boxDataTable.SelectedItem.ToString();
-            string myexceldataquery = "select * from [Лист1$]";
-
-            try
-            { 
-                string sexcelconnectionstring = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelFilePath +
-               ";Extended Properties='Excel 12.0 xml; HDR=NO;'";
-                string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=test;Integrated Security=SSPI";
-                /*string sclearsql = "delete from " + ssqltable;
-                SqlConnection sqlconn = new SqlConnection(ssqlconnectionstring);
-                SqlCommand sqlcmd = new SqlCommand(sclearsql, sqlconn);
-                sqlconn.Open();
-                sqlcmd.ExecuteNonQuery();
-                sqlconn.Close(); */
-                OleDbConnection oledbconn = new OleDbConnection(sexcelconnectionstring);
-                OleDbCommand oledbcmd = new OleDbCommand(myexceldataquery, oledbconn);
-                oledbconn.Open();
-                OleDbDataReader dr = oledbcmd.ExecuteReader();
-                SqlBulkCopy bulkcopy = new SqlBulkCopy(ssqlconnectionstring);
-                bulkcopy.DestinationTableName = ssqltable;
-                while (dr.Read())
-                {
-                    bulkcopy.WriteToServer(dr);
-                }
-                dr.Close();
-                oledbconn.Close();
-                MessageBox.Show("File imported into sql server.");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message.ToString());
-            }
+            Window1 dwWindow = new Window1();
+            dwWindow.Show();
         }
-        private System.Data.DataTable GetData()
-        {
-            string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=test;Integrated Security=SSPI";
-            SqlConnection sqlconn = new SqlConnection(ssqlconnectionstring);
-            System.Data.DataTable dt = new System.Data.DataTable();
-            try
-            {
-                /*string query = @"SELECT     Customers.CompanyName, Customers.ContactName, Orders.ShipVia, Orders.Freight, Orders.ShipName, Orders.ShipAddress, Orders.ShipCity, Orders.ShipRegion, Orders.ShipPostalCode, Orders.ShipCountry
-                    FROM         Customers INNER JOIN
-                      Orders ON Customers.CustomerID = Orders.CustomerID";*/
-                string query = @"SELECT * from dbo."+boxDataTable.SelectedItem;
-                SqlCommand comm = new SqlCommand(query, sqlconn);
-
-                sqlconn.Open();
-                SqlDataAdapter da = new SqlDataAdapter(comm);
-                DataSet ds = new DataSet();
-                da.Fill(ds);
-                dt = ds.Tables[0];
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK);
-            }
-            finally
-            {
-                sqlconn.Close();
-                sqlconn.Dispose();
-            }
-            return dt;
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Excel.Application xlApp = new Excel.Application();
-            try
-            {
-                //добавляем книгу
-                xlApp.Workbooks.Add(Type.Missing);
-
-                //делаем временно неактивным документ
-                xlApp.Interactive = false;
-                xlApp.EnableEvents = false;
-                Worksheet
-
-                                //выбираем лист на котором будем работать (Лист 1)
-                                xlSheet = (Excel.Worksheet)xlApp.Sheets[1];
-
-                //Название листа
-                xlSheet.Name = "Данные";
-
-                //Выгрузка данных
-                System.Data.DataTable dt = GetData();
-
-                int collInd = 0;
-                int rowInd = 0;
-                string data = "";
-
-                //называем колонки
-                for (int i = 0; i < dt.Columns.Count; i++)
-                {
-                    data = dt.Columns[i].ColumnName.ToString();
-                    xlSheet.Cells[1, i + 1] = data;
-                    Range
-
-                                        //выделяем первую строку
-                                        xlSheetRange = xlSheet.get_Range("A1:Z1", Type.Missing);
-
-                    //делаем полужирный текст и перенос слов
-                    xlSheetRange.WrapText = true;
-                    xlSheetRange.Font.Bold = true;
-                }
-
-                //заполняем строки
-                for (rowInd = 0; rowInd < dt.Rows.Count; rowInd++)
-                {
-                    for (collInd = 0; collInd < dt.Columns.Count; collInd++)
-                    {
-                        data = dt.Rows[rowInd].ItemArray[collInd].ToString();
-                        xlSheet.Cells[rowInd + 2, collInd + 1] = data;
-                    }
-                }
-
-                //выбираем всю область данных
-                xlSheetRange = xlSheet.UsedRange;
-
-                //выравниваем строки и колонки по их содержимому
-                xlSheetRange.Columns.AutoFit();
-                xlSheetRange.Rows.AutoFit();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            finally
-            {
-                //Показываем ексель
-                xlApp.Visible = true;
-
-                xlApp.Interactive = true;
-                xlApp.ScreenUpdating = true;
-                xlApp.UserControl = true;
-
-                //Отсоединяемся от Excel
-               // releaseObject(xlSheetRange);
-                //releaseObject(xlSheet);
-                //releaseObject(xlApp);
-            }
-        }
-
     }
     
 }
