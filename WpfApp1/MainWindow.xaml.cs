@@ -73,16 +73,27 @@ namespace WpfApp1
             {
                 textBox1.Text = ope.FileName;
             }
-            //if (ope.ShowDialog() == DialogResult.Cancel)
-            //    return;
-            
+
+            //из выбранной книги выводим все названия листов в combobox
+            Excel.Workbook xlWB;
+            Excel.Application xlApp = new Excel.Application();
+            xlWB = xlApp.Workbooks.Open(textBox1.Text);
+            boxListExcel.Items.Clear(); // очистить combobox 
+            //добавить название листов из книги
+            for (int i=0; i<xlWB.Sheets.Count;i++)
+            {                
+                boxListExcel.Items.Add(xlWB.Worksheets[i+1].Name);
+            }
+
+
         }
         //выгрузка из Excel в БД
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog ope = new OpenFileDialog();
-            ope.FileName=textBox1.Text;
-            string excelFilePath = ope.FileName;
+            //  OpenFileDialog ope = new OpenFileDialog();
+            //  ope.FileName=textBox1.Text;
+            //  string excelFilePath = ope.FileName;
+            string excelFilePath = textBox1.Text;
 
             //string ssqltable = "test";
             string ssqltable = boxDataTable.SelectedItem.ToString();
@@ -227,7 +238,6 @@ namespace WpfApp1
             }
         }
 
-        
     }
     
 }

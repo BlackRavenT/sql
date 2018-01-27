@@ -7,12 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
 	<Grid>
-		<Button x:Name="button1" Content="Выбрать..." HorizontalAlignment="Left" Margin="385,89,0,0" VerticalAlignment="Top" Width="75" Click="button1_Click"/>
-		<TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="23" Margin="10,86,0,0" TextWrapping="Wrap" Text="Выберите файл..." VerticalAlignment="Top" Width="359" />
-		<Label Content="Загрузка данных из Excel в БД" HorizontalAlignment="Left" Height="25" Margin="10,47,0,0" VerticalAlignment="Top" Width="359"/>
-		<Button Content="Загрузка" HorizontalAlignment="Left" Height="20" Margin="385,126,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-		<Button Content="Выгрузка" HorizontalAlignment="Left" Height="20" Margin="385,215,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1" RenderTransformOrigin="0.48,3.3"/>
-		<Label Content="Выгрузка данных из БД в Excel" HorizontalAlignment="Left" Height="24" Margin="10,197,0,0" VerticalAlignment="Top" Width="293"/>
-		<ComboBox x:Name="boxDataTable" HorizontalAlignment="Left" Height="20" Margin="10,140,0,0" VerticalAlignment="Top" Width="359"/>
+		<Button x:Name="button1" Content="Выбрать..." HorizontalAlignment="Left" Margin="385,118,0,0" VerticalAlignment="Top" Width="75" Click="button1_Click"/>
+		<TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="23" Margin="10,115,0,0" TextWrapping="Wrap" Text="Выберите файл..." VerticalAlignment="Top" Width="359" />
+		<Label Content="Загрузка данных из Excel в БД" HorizontalAlignment="Left" Height="25" Margin="10,85,0,0" VerticalAlignment="Top" Width="359"/>
+		<Button Content="Загрузка" HorizontalAlignment="Left" Height="20" Margin="385,188,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+		<Button Content="Выгрузка" HorizontalAlignment="Left" Height="20" Margin="385,249,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1" RenderTransformOrigin="0.48,3.3"/>
+		<Label Content="Выгрузка данных из БД в Excel" HorizontalAlignment="Left" Height="24" Margin="10,246,0,0" VerticalAlignment="Top" Width="293"/>
+		<ComboBox x:Name="boxDataTable" HorizontalAlignment="Left" Height="20" Margin="10,44,0,0" VerticalAlignment="Top" Width="359" />
+		<Label Content="Выбрать таблицу в БД для дальнейшей работы:" HorizontalAlignment="Left" Height="34" Margin="10,10,0,0" VerticalAlignment="Top" Width="359"/>
+		<Label Content="Выбрать лист в книге Excel, из которой будет выгрузка:" HorizontalAlignment="Left" Height="27" Margin="10,154,0,0" VerticalAlignment="Top" Width="359"/>
+		<ComboBox x:Name="boxListExcel" HorizontalAlignment="Left" Height="22" Margin="10,186,0,0" VerticalAlignment="Top" Width="359"/>
 	</Grid>
 </Window>
