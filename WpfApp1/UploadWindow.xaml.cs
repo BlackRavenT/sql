@@ -1,4 +1,4 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿//using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Reflection;
 
 namespace WpfApp1
 {
@@ -26,12 +27,12 @@ namespace WpfApp1
     /// </summary>
     public partial class UploadWindow : System.Windows.Window
     {
-        private Range xlSheetRange;
+        private Excel.Range xlSheetRange;
 
         public UploadWindow()
         {
             InitializeComponent();
-            string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=test;Integrated Security=SSPI";
+            string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=dip;Integrated Security=SSPI";
             SqlConnection conn = new SqlConnection(ssqlconnectionstring);
             conn.Open();
             string sql = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_TYPE != 'VIEW'";
@@ -82,11 +83,11 @@ namespace WpfApp1
 
 
         }
-        //выгрузка из Excel в БД
+        //выгрузка ИЗ Excel в БД
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //  OpenFileDialog ope = new OpenFileDialog();
-            //  ope.FileName=textBox1.Text;
+              OpenFileDialog ope = new OpenFileDialog();
+              ope.FileName=textBox1.Text;
             //  string excelFilePath = ope.FileName;
             string excelFilePath = textBox1.Text;
 
@@ -96,28 +97,83 @@ namespace WpfApp1
 
             try
             {
-                string sexcelconnectionstring = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelFilePath +
+                Excel.Application app = new Excel.Application();
+                Excel.Workbook workbook;
+                Excel.Worksheet NwSheet;
+                Excel.Range ShtRange;
+                DataTable dt = new DataTable();
+                //if (ope.ShowDialog() == DialogResult.OK)
+                //{
+                    //textBox1.Text = ope.FileName;
+
+                    workbook = app.Workbooks.Open(ope.FileName, Missing.Value,
+                    Missing.Value, Missing.Value, Missing.Value, Missing.Value,
+                    Missing.Value, Missing.Value, Missing.Value, Missing.Value,
+                    Missing.Value, Missing.Value, Missing.Value, Missing.Value,
+                    Missing.Value);
+
+                    //Устанавливаем номер листа из котрого будут извлекаться данные
+                    //Листы нумеруются от 1
+                    NwSheet = (Excel.Worksheet)workbook.Sheets.get_Item(1);
+                    ShtRange = NwSheet.UsedRange;
+                    for (int Cnum = 1; Cnum <= ShtRange.Columns.Count; Cnum++)
+                    {
+                        dt.Columns.Add(
+                           new DataColumn((ShtRange.Cells[1, Cnum] as Excel.Range).Value2.ToString()));
+                    }
+                    dt.AcceptChanges();
+
+                    string[] columnNames = new String[dt.Columns.Count];
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        columnNames[0] = dt.Columns[i].ColumnName;
+                    }
+
+                    for (int Rnum = 2; Rnum <= ShtRange.Rows.Count; Rnum++)
+                    {
+                        DataRow dr = dt.NewRow();
+                        for (int Cnum = 1; Cnum <= ShtRange.Columns.Count; Cnum++)
+                        {
+                            if ((ShtRange.Cells[Rnum, Cnum] as Excel.Range).Value2 != null)
+                            {
+                                dr[Cnum - 1] =
+                    (ShtRange.Cells[Rnum, Cnum] as Excel.Range).Value2.ToString();
+                            }
+                        }
+                        dt.Rows.Add(dr);
+                        dt.AcceptChanges();
+                    }
+
+               // dataGridView1.DataSource = dt;
+                MessageBox.Show("File imported into sql server.");
+                app.Quit();
+                //}
+                //else
+                //    Application.Exit();
+                /*string sexcelconnectionstring = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelFilePath +
                ";Extended Properties='Excel 12.0 xml; HDR=NO;'";
-                string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=test;Integrated Security=SSPI";
+                string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=dip;Integrated Security=SSPI";
                 /*string sclearsql = "delete from " + ssqltable;
                 SqlConnection sqlconn = new SqlConnection(ssqlconnectionstring);
                 SqlCommand sqlcmd = new SqlCommand(sclearsql, sqlconn);
                 sqlconn.Open();
                 sqlcmd.ExecuteNonQuery();
                 sqlconn.Close(); */
-                OleDbConnection oledbconn = new OleDbConnection(sexcelconnectionstring);
-                OleDbCommand oledbcmd = new OleDbCommand(myexceldataquery, oledbconn);
-                oledbconn.Open();
-                OleDbDataReader dr = oledbcmd.ExecuteReader();
-                SqlBulkCopy bulkcopy = new SqlBulkCopy(ssqlconnectionstring);
-                bulkcopy.DestinationTableName = ssqltable;
-                while (dr.Read())
-                {
-                    bulkcopy.WriteToServer(dr);
-                }
-                dr.Close();
-                oledbconn.Close();
-                MessageBox.Show("File imported into sql server.");
+                /* OleDbConnection oledbconn = new OleDbConnection(sexcelconnectionstring);
+                 OleDbCommand oledbcmd = new OleDbCommand(myexceldataquery, oledbconn);
+                 oledbconn.Open();
+                 OleDbDataReader dr = oledbcmd.ExecuteReader();
+                 SqlBulkCopy bulkcopy = new SqlBulkCopy(ssqlconnectionstring);
+                 bulkcopy.DestinationTableName = ssqltable;
+                 while (dr.Read())
+                 {
+                     bulkcopy.WriteToServer(dr);
+                 }
+                 dr.Close();
+                 oledbconn.Close();
+                 MessageBox.Show("File imported into sql server.");*/
+
+
             }
             catch (Exception ex)
             {

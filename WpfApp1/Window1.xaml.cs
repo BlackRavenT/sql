@@ -31,7 +31,7 @@ namespace WpfApp1
         public Window1()
         {
             InitializeComponent();
-            string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=test;Integrated Security=SSPI";
+            string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=dip;Integrated Security=SSPI";
             SqlConnection conn = new SqlConnection(ssqlconnectionstring);
             conn.Open();
             string sql = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_TYPE != 'VIEW'";
