@@ -1,4 +1,6 @@
-﻿//using Microsoft.Office.Interop.Excel;
+﻿//окно загрузки данных из Excel в БД
+
+//using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -88,91 +90,69 @@ namespace WpfApp1
         {
               OpenFileDialog ope = new OpenFileDialog();
               ope.FileName=textBox1.Text;
-            //  string excelFilePath = ope.FileName;
+            
             string excelFilePath = textBox1.Text;
 
-            //string ssqltable = "test";
+            
             string ssqltable = boxDataTable.SelectedItem.ToString();
-            string myexceldataquery = "select * from [" + boxListExcel.SelectedItem + "$]";
+            string myexceldataquery = "select * from [" + boxListExcel.SelectedItem + "$]"; // select * into dbo.tablename - создаст новую таблицу при запросе
 
             try
             {
-                Excel.Application app = new Excel.Application();
-                Excel.Workbook workbook;
-                Excel.Worksheet NwSheet;
-                Excel.Range ShtRange;
-                DataTable dt = new DataTable();
-                //if (ope.ShowDialog() == DialogResult.OK)
-                //{
-                    //textBox1.Text = ope.FileName;
-
-                    workbook = app.Workbooks.Open(ope.FileName, Missing.Value,
-                    Missing.Value, Missing.Value, Missing.Value, Missing.Value,
-                    Missing.Value, Missing.Value, Missing.Value, Missing.Value,
-                    Missing.Value, Missing.Value, Missing.Value, Missing.Value,
-                    Missing.Value);
-
-                    //Устанавливаем номер листа из котрого будут извлекаться данные
-                    //Листы нумеруются от 1
-                    NwSheet = (Excel.Worksheet)workbook.Sheets.get_Item(1);
-                    ShtRange = NwSheet.UsedRange;
-                    for (int Cnum = 1; Cnum <= ShtRange.Columns.Count; Cnum++)
-                    {
-                        dt.Columns.Add(
-                           new DataColumn((ShtRange.Cells[1, Cnum] as Excel.Range).Value2.ToString()));
-                    }
-                    dt.AcceptChanges();
-
-                    string[] columnNames = new String[dt.Columns.Count];
-                    for (int i = 0; i < dt.Columns.Count; i++)
-                    {
-                        columnNames[0] = dt.Columns[i].ColumnName;
-                    }
-
-                    for (int Rnum = 2; Rnum <= ShtRange.Rows.Count; Rnum++)
-                    {
-                        DataRow dr = dt.NewRow();
-                        for (int Cnum = 1; Cnum <= ShtRange.Columns.Count; Cnum++)
-                        {
-                            if ((ShtRange.Cells[Rnum, Cnum] as Excel.Range).Value2 != null)
-                            {
-                                dr[Cnum - 1] =
-                    (ShtRange.Cells[Rnum, Cnum] as Excel.Range).Value2.ToString();
-                            }
-                        }
-                        dt.Rows.Add(dr);
-                        dt.AcceptChanges();
-                    }
-
-               // dataGridView1.DataSource = dt;
-                MessageBox.Show("File imported into sql server.");
-                app.Quit();
-                //}
-                //else
-                //    Application.Exit();
-                /*string sexcelconnectionstring = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelFilePath +
-               ";Extended Properties='Excel 12.0 xml; HDR=NO;'";
+                string sexcelconnectionstring = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelFilePath + ";Extended Properties='Excel 12.0 xml; HDR=YES;'";
                 string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=dip;Integrated Security=SSPI";
-                /*string sclearsql = "delete from " + ssqltable;
+
+
+
+                DataSet dataSet = new DataSet("Tables"); // Создаем новый DataSet
+
+                // Командная строка "подключения к Excel"
+
+                // Открываем соединение
+                OleDbConnection oledbconn = new OleDbConnection(sexcelconnectionstring);
+                oledbconn.Open();
+
+                // Получаем список листов в файле
+                DataTable schemaTable = oledbconn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
+
+                // Вычитываем все таблицы
+                for (int i = 0; i < schemaTable.Rows.Count; i++)
+                {
+
+                    // Берем название i-ого листа
+                    string sheet1 = (string)schemaTable.Rows[i].ItemArray[2];
+                    // Выбираем все данные с листа
+                    select = String.Format("SELECT * FROM [{0}]", sheet1);
+                    OleDbDataAdapter dataAdapter = new OleDbDataAdapter(select, dbConnect);
+                    DataTable dataTable = new DataTable();
+                    dataAdapter.Fill(dataTable); // Заполняем таблицу
+                    dataTable.TableName = sheet1.Substring(0, sheet1.Length - 1); // В конце от Экселя стоит символ '$'
+                    dataSet.Tables.Add(dataTable);
+
+                }
+                /*
+                string sclearsql = "delete from " + ssqltable;
                 SqlConnection sqlconn = new SqlConnection(ssqlconnectionstring);
                 SqlCommand sqlcmd = new SqlCommand(sclearsql, sqlconn);
                 sqlconn.Open();
                 sqlcmd.ExecuteNonQuery();
-                sqlconn.Close(); */
-                /* OleDbConnection oledbconn = new OleDbConnection(sexcelconnectionstring);
-                 OleDbCommand oledbcmd = new OleDbCommand(myexceldataquery, oledbconn);
-                 oledbconn.Open();
-                 OleDbDataReader dr = oledbcmd.ExecuteReader();
-                 SqlBulkCopy bulkcopy = new SqlBulkCopy(ssqlconnectionstring);
-                 bulkcopy.DestinationTableName = ssqltable;
-                 while (dr.Read())
-                 {
-                     bulkcopy.WriteToServer(dr);
-                 }
-                 dr.Close();
-                 oledbconn.Close();
-                 MessageBox.Show("File imported into sql server.");*/
+                sqlconn.Close(); 
+                */
+                
+                //OleDbCommand oledbcmd = new OleDbCommand(myexceldataquery, oledbconn);
+                
+               // OleDbDataReader dr = oledbcmd.ExecuteReader();
 
+
+                OleDbDataAdapter da = new OleDbDataAdapter(myexceldataquery, oledbconn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);     
+                            
+                
+                
+                //dr.Close();
+                oledbconn.Close();
+                MessageBox.Show("File imported into sql server.");
 
             }
             catch (Exception ex)
@@ -185,3 +165,49 @@ namespace WpfApp1
         
     }
 }
+
+
+
+
+/* SqlBulkCopy bulkcopy = new SqlBulkCopy(ssqlconnectionstring);
+                bulkcopy.DestinationTableName = ssqltable;
+                //bulkcopy.DestinationTableName = "dbo.buffer";
+                while (dr.Read())
+                 {
+                    bulkcopy.ColumnMappings.Add("Авторы","Авторы");
+                    bulkcopy.ColumnMappings.Add("Название публикации", "Название публикации");
+                    bulkcopy.ColumnMappings.Add("Год", "Год");
+                    bulkcopy.ColumnMappings.Add("Название журнала", "Название журнала");
+                    //bulkcopy.ColumnMappings.Add("Кол-во цитирований на 20.01.2018", "Кол-во цитирований на 20.01.2018");
+                    bulkcopy.ColumnMappings.Add("Кол-во авторов", "Кол-во авторов");
+                    bulkcopy.ColumnMappings.Add("Дата внесения в базу", "Дата внесения в базу");
+                    bulkcopy.ColumnMappings.Add("DOI", "DOI");
+                    bulkcopy.ColumnMappings.Add("Авторы с аффилиациями", "Авторы с аффилиациями");
+                    bulkcopy.ColumnMappings.Add("Вид публикации", "Вид публикации");
+                    bulkcopy.ColumnMappings.Add("EID", "EID");
+                    bulkcopy.ColumnMappings.Add("Язык публикации", "Язык публикации");
+                    bulkcopy.ColumnMappings.Add("SNIP", "SNIP");
+                    bulkcopy.ColumnMappings.Add("Квартили по Scopus (SJR)", "Квартили по Scopus (SJR)");                    
+                    bulkcopy.ColumnMappings.Add("Авторы ВШЭ (поиск вручную)", "Авторы ВШЭ (поиск вручную)");
+                    bulkcopy.ColumnMappings.Add("Авторы НИУ ВШЭ", "Авторы НИУ ВШЭ");
+                    bulkcopy.ColumnMappings.Add("российский журнал", "российский журнал");*/
+
+/*bulkcopy.ColumnMappings.Add(0,0);
+bulkcopy.ColumnMappings.Add(1,1);
+bulkcopy.ColumnMappings.Add(2,2);
+bulkcopy.ColumnMappings.Add(3,3);
+bulkcopy.ColumnMappings.Add(4,4);
+bulkcopy.ColumnMappings.Add(5,5);
+bulkcopy.ColumnMappings.Add(6,6);
+bulkcopy.ColumnMappings.Add(7,7);
+bulkcopy.ColumnMappings.Add(8,8);
+bulkcopy.ColumnMappings.Add(9,9);
+bulkcopy.ColumnMappings.Add(10,10);
+bulkcopy.ColumnMappings.Add(11,11);
+bulkcopy.ColumnMappings.Add(12,12);
+bulkcopy.ColumnMappings.Add(13,13);
+bulkcopy.ColumnMappings.Add(14,14);
+bulkcopy.ColumnMappings.Add(15,15);
+bulkcopy.ColumnMappings.Add(16,16);
+bulkcopy.WriteToServer(dr); 
+}*/
