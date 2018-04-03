@@ -3,24 +3,13 @@
 //using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Reflection;
+using System.Collections;
+ 
 
 namespace WpfApp1
 {
@@ -95,41 +84,39 @@ namespace WpfApp1
 
             
             string ssqltable = boxDataTable.SelectedItem.ToString();
+            string sheet1 = boxListExcel.SelectedItem.ToString();
             string myexceldataquery = "select * from [" + boxListExcel.SelectedItem + "$]"; // select * into dbo.tablename - создаст новую таблицу при запросе
 
             try
             {
-                string sexcelconnectionstring = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelFilePath + ";Extended Properties='Excel 12.0 xml; HDR=YES;'";
-                string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=dip;Integrated Security=SSPI";
-
-
-
-                DataSet dataSet = new DataSet("Tables"); // Создаем новый DataSet
-
                 // Командная строка "подключения к Excel"
-
-                // Открываем соединение
+                string sexcelconnectionstring = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelFilePath + ";Extended Properties='Excel 12.0 xml; HDR=YES;'";
+                // Строка подключения к SQL
+                string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=dip;Integrated Security=SSPI";
+                // Создаем новый DataSet
+                DataSet dataSet = new DataSet("Tables"); 
+                // Открываем соединение с Excel
                 OleDbConnection oledbconn = new OleDbConnection(sexcelconnectionstring);
                 oledbconn.Open();
-
-                // Получаем список листов в файле
+                 // Получаем список листов в файле
                 DataTable schemaTable = oledbconn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
-
+                string select;
                 // Вычитываем все таблицы
-                for (int i = 0; i < schemaTable.Rows.Count; i++)
-                {
+                //for (int i = 0; i < schemaTable.Rows.Count; i++)
+                //{
 
                     // Берем название i-ого листа
-                    string sheet1 = (string)schemaTable.Rows[i].ItemArray[2];
+                  //  string sheet1 = (string)schemaTable.Rows[i].ItemArray[2];
                     // Выбираем все данные с листа
-                    select = String.Format("SELECT * FROM [{0}]", sheet1);
-                    OleDbDataAdapter dataAdapter = new OleDbDataAdapter(select, dbConnect);
+                    //select = String.Format("SELECT * FROM [{0}]", sheet1);
+                    OleDbDataAdapter dataAdapter = new OleDbDataAdapter(myexceldataquery, oledbconn);
                     DataTable dataTable = new DataTable();
                     dataAdapter.Fill(dataTable); // Заполняем таблицу
                     dataTable.TableName = sheet1.Substring(0, sheet1.Length - 1); // В конце от Экселя стоит символ '$'
                     dataSet.Tables.Add(dataTable);
-
-                }
+                    Dataview dvWindow = new Dataview();
+                    dvWindow.dataGridView1.ItemsSource = dataTable.DefaultView;
+                //}
                 /*
                 string sclearsql = "delete from " + ssqltable;
                 SqlConnection sqlconn = new SqlConnection(ssqlconnectionstring);
@@ -144,15 +131,17 @@ namespace WpfApp1
                // OleDbDataReader dr = oledbcmd.ExecuteReader();
 
 
-                OleDbDataAdapter da = new OleDbDataAdapter(myexceldataquery, oledbconn);
+                /*OleDbDataAdapter da = new OleDbDataAdapter(myexceldataquery, oledbconn);
                 DataTable dt = new DataTable();
-                da.Fill(dt);     
+                da.Fill(dt);  */   
                             
                 
                 
                 //dr.Close();
                 oledbconn.Close();
                 MessageBox.Show("File imported into sql server.");
+                
+                dvWindow.Show();
 
             }
             catch (Exception ex)
