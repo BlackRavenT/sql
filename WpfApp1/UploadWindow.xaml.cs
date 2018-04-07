@@ -19,6 +19,9 @@ namespace WpfApp1
     public partial class UploadWindow : System.Windows.Window
     {
         private Excel.Range xlSheetRange;
+        internal string dataSource;
+        internal static DataSet dataSet;
+        internal static DataTable dataTable;
 
         public UploadWindow()
         {
@@ -28,7 +31,7 @@ namespace WpfApp1
             conn.Open();
             string sql = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_TYPE != 'VIEW'";
 
-            SqlCommand command = new SqlCommand(sql, conn);
+            SqlCommand command = new SqlCommand(sql, conn);           
 
             try
             {
@@ -44,6 +47,7 @@ namespace WpfApp1
                 MessageBox.Show("Ошибка:" + ex);
             }
             conn.Close();
+            
         }
         //выбор файла
         private void button1_Click(object sender, RoutedEventArgs e)
@@ -71,13 +75,14 @@ namespace WpfApp1
             {
                 boxListExcel.Items.Add(xlWB.Worksheets[i + 1].Name);
             }
-
+            
 
         }
         //выгрузка ИЗ Excel в БД
-        private void Button_Click(object sender, RoutedEventArgs e)
+        public void Button_Click(object sender, RoutedEventArgs e)
         {
-              OpenFileDialog ope = new OpenFileDialog();
+            dataSource = boxDataSource.SelectedItem.ToString();
+            OpenFileDialog ope = new OpenFileDialog();
               ope.FileName=textBox1.Text;
             
             string excelFilePath = textBox1.Text;
@@ -94,7 +99,7 @@ namespace WpfApp1
                 // Строка подключения к SQL
                 string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=dip;Integrated Security=SSPI";
                 // Создаем новый DataSet
-                DataSet dataSet = new DataSet("Tables"); 
+                dataSet = new DataSet("Tables"); 
                 // Открываем соединение с Excel
                 OleDbConnection oledbconn = new OleDbConnection(sexcelconnectionstring);
                 oledbconn.Open();

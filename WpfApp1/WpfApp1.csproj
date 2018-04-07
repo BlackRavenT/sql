@@ -94,6 +94,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CodeFile1.cs" />
     <Compile Include="Dataview.xaml.cs">
       <DependentUpon>Dataview.xaml</DependentUpon>
     </Compile>

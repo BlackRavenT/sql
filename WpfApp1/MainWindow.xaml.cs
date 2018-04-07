@@ -43,11 +43,10 @@ namespace WpfApp1
 
        
         //загрузка данных в БД
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        public void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             UploadWindow upWindow = new UploadWindow();
             upWindow.Show();
-
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)

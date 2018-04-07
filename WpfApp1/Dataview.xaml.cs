@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,26 @@ namespace WpfApp1
         public Dataview()
         {
             InitializeComponent();
+        }
+
+        List<string> HseName = new List<string>()
+            {
+                "Natl Res Univ, Higher Sch Econ",
+                "Natl Univ, Higher Sch Econ, Moscow Inst Elect&Math"
+            };
+        internal static DataSet ds;
+        internal static DataTable dt;
+        public void buttonInsert_Click(object sender, RoutedEventArgs e)
+        {
+            string res="";
+            dt = new DataTable();
+            dt = UploadWindow.dataTable;
+            res = UploadWindow.dataSource;
+            if (UploadWindow.dataSource.ToString()=="WoS")
+            {
+                dt.Rows[1]["Авторы с аффилиациями"] = res;
+                MessageBox.Show(res);
+            }
         }
     }
 }

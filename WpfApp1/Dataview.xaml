@@ -8,6 +8,7 @@
         Title="Dataview" Height="350" Width="525">
 	<Grid Margin="0,0,-414,-304">
 		<DataGrid x:Name="dataGridView1" AutoGenerateColumns="True" HorizontalAlignment="Left" Height="184" Margin="10,59,0,0" VerticalAlignment="Top" Width="496"/>
+		<Button x:Name="buttonInsert" Content="Добавить в базу" HorizontalAlignment="Left" Height="37" Margin="364,273,0,0" VerticalAlignment="Top" Width="142" Click="buttonInsert_Click"/>
 
 	</Grid>
 </Window>
