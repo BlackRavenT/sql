@@ -19,13 +19,15 @@ namespace WpfApp1
     public partial class UploadWindow : System.Windows.Window
     {
         private Excel.Range xlSheetRange;
-        internal string dataSource;
+        string dataSource;
         internal static DataSet dataSet;
         internal static DataTable dataTable;
 
         public UploadWindow()
         {
             InitializeComponent();
+            boxDataSource.Items.Add("WoS");
+            boxDataSource.Items.Add("Scopus");
             string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=dip;Integrated Security=SSPI";
             SqlConnection conn = new SqlConnection(ssqlconnectionstring);
             conn.Open();
@@ -64,7 +66,7 @@ namespace WpfApp1
             {
                 textBox1.Text = ope.FileName;
             }
-
+            
             //из выбранной книги выводим все названия листов в combobox
             Excel.Workbook xlWB;
             Excel.Application xlApp = new Excel.Application();
@@ -81,9 +83,13 @@ namespace WpfApp1
         //выгрузка ИЗ Excel в БД
         public void Button_Click(object sender, RoutedEventArgs e)
         {
-            dataSource = boxDataSource.SelectedItem.ToString();
+            string res;
+            UploadWindow upWnd = new UploadWindow();
+            res = boxDataSource.SelectedItem.ToString();
+            upWnd.dataSource = res;
+
             OpenFileDialog ope = new OpenFileDialog();
-              ope.FileName=textBox1.Text;
+            ope.FileName=textBox1.Text;
             
             string excelFilePath = textBox1.Text;
 
@@ -99,7 +105,7 @@ namespace WpfApp1
                 // Строка подключения к SQL
                 string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=dip;Integrated Security=SSPI";
                 // Создаем новый DataSet
-                dataSet = new DataSet("Tables"); 
+                UploadWindow.dataSet = new DataSet("Tables"); 
                 // Открываем соединение с Excel
                 OleDbConnection oledbconn = new OleDbConnection(sexcelconnectionstring);
                 oledbconn.Open();
@@ -115,36 +121,16 @@ namespace WpfApp1
                     // Выбираем все данные с листа
                     //select = String.Format("SELECT * FROM [{0}]", sheet1);
                     OleDbDataAdapter dataAdapter = new OleDbDataAdapter(myexceldataquery, oledbconn);
-                    DataTable dataTable = new DataTable();
-                    dataAdapter.Fill(dataTable); // Заполняем таблицу
-                    dataTable.TableName = sheet1.Substring(0, sheet1.Length - 1); // В конце от Экселя стоит символ '$'
-                    dataSet.Tables.Add(dataTable);
+                    UploadWindow.dataTable = new DataTable();
+                    dataAdapter.Fill(UploadWindow.dataTable); // Заполняем таблицу
+                    UploadWindow.dataTable.TableName = sheet1.Substring(0, sheet1.Length - 1); // В конце от Экселя стоит символ '$'
+                    UploadWindow.dataSet.Tables.Add(UploadWindow.dataTable);
                     Dataview dvWindow = new Dataview();
-                    dvWindow.dataGridView1.ItemsSource = dataTable.DefaultView;
-                //}
-                /*
-                string sclearsql = "delete from " + ssqltable;
-                SqlConnection sqlconn = new SqlConnection(ssqlconnectionstring);
-                SqlCommand sqlcmd = new SqlCommand(sclearsql, sqlconn);
-                sqlconn.Open();
-                sqlcmd.ExecuteNonQuery();
-                sqlconn.Close(); 
-                */
-                
-                //OleDbCommand oledbcmd = new OleDbCommand(myexceldataquery, oledbconn);
-                
-               // OleDbDataReader dr = oledbcmd.ExecuteReader();
-
-
-                /*OleDbDataAdapter da = new OleDbDataAdapter(myexceldataquery, oledbconn);
-                DataTable dt = new DataTable();
-                da.Fill(dt);  */   
-                            
-                
-                
-                //dr.Close();
+                    dvWindow.dataGridView1.ItemsSource = UploadWindow.dataTable.DefaultView;
+                    //MessageBox.Show(UploadWindow.dataTable.Rows[2]["Авторы с аффилиациями"].ToString());
+            
                 oledbconn.Close();
-                MessageBox.Show("File imported into sql server.");
+                //MessageBox.Show("File imported into sql server.");
                 
                 dvWindow.Show();
 
@@ -160,7 +146,24 @@ namespace WpfApp1
     }
 }
 
+//}
+/*
+string sclearsql = "delete from " + ssqltable;
+SqlConnection sqlconn = new SqlConnection(ssqlconnectionstring);
+SqlCommand sqlcmd = new SqlCommand(sclearsql, sqlconn);
+sqlconn.Open();
+sqlcmd.ExecuteNonQuery();
+sqlconn.Close(); 
+*/
 
+//OleDbCommand oledbcmd = new OleDbCommand(myexceldataquery, oledbconn);
+
+// OleDbDataReader dr = oledbcmd.ExecuteReader();
+
+
+/*OleDbDataAdapter da = new OleDbDataAdapter(myexceldataquery, oledbconn);
+DataTable dt = new DataTable();
+da.Fill(dt);  */
 
 
 /* SqlBulkCopy bulkcopy = new SqlBulkCopy(ssqlconnectionstring);

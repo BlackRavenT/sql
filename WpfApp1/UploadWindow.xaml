@@ -19,9 +19,8 @@
 		<Label Content="Выбрать лист в книге Excel, из которой будет выгрузка:" HorizontalAlignment="Left" Height="27" Margin="10,154,0,0" VerticalAlignment="Top" Width="359" Grid.ColumnSpan="2"/>
 		<ComboBox x:Name="boxListExcel" HorizontalAlignment="Left" Height="22" Margin="10,186,0,0" VerticalAlignment="Top" Width="359" Grid.ColumnSpan="2"/>
 		<Button x:Name="button1" Content="Выбрать..." HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="button1_Click" Margin="86,118,0,0" Grid.Column="1"/>
-		<ComboBox x:Name="boxDataSource" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" Margin="10,254,0,0" VerticalAlignment="Top" Width="359" x:FieldModifier="public">
-			<TextBlock>Scopus</TextBlock>
-			<TextBlock>WoS</TextBlock>
+		<ComboBox x:Name="boxDataSource" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" Margin="10,254,0,0" VerticalAlignment="Top" Width="359" >
+			
 		</ComboBox>
 	</Grid>
 </Window>
