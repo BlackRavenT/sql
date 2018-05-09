@@ -121,7 +121,7 @@ namespace WpfApp1
                                 //MessageBox.Show(newDt.Rows[k]["Авторы"].ToString());
                                 newDt.Rows[k]["Авторы"] = person;
                                 
-                                MessageBox.Show(newDt.Rows[k]["Авторы"].ToString());
+                                //MessageBox.Show(newDt.Rows[k]["Авторы"].ToString());
                                 k++;
                             }
                         }
@@ -207,9 +207,10 @@ namespace WpfApp1
             int i;
             foreach (DataRow drNewDt in newDt.Rows)
             {
-                //AuthVerifName = drNewDt["Авторы"].ToString();
+                AuthVerifName = drNewDt["Авторы"].ToString();
                 //i = Author_Verif.CountAuthor(drNewDt["Авторы"].ToString());
                 i = Author_Verif.CountAuthor(drNewDt); //считаем, сколько авторов подходит под маску по текущей строке
+                //если не нашли такого автора в таблице сотрудников
                 if (i==0)
                 {
 
@@ -217,13 +218,16 @@ namespace WpfApp1
                     
                     author_view.ShowDialog();
                 }
+                //если нашли ровно одного подходящего 
                 else if (i==1)
                 {
-
+                    //тут функция проверки публикации
                 }
                 else
                 {
+                    Author_0_matches author_view = new Author_0_matches();
 
+                    author_view.ShowDialog();
                 }
             }
         }

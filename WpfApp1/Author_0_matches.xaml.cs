@@ -42,27 +42,33 @@ namespace WpfApp1
             dataGridViewAuth_0.ItemsSource = dtSearch.DefaultView;           
 
         }
-
+        //обработка добавления автора из существующих сотрудников 
         private void buttonChoose_Click (object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)dataGridViewAuth_0.SelectedItems[0];
             string s = row["empl_name"].ToString();
             MessageBox.Show(s);
+
             //тут функция проверки по публикации
+            this.Close();
         }
 
-
+        // обработка сообщения об ошибке
         private void buttonErrorAuth_Click(object sender, RoutedEventArgs e)
         {
             Dataview.errDt.ImportRow(Author_Verif.AuthorRow); //добавили в файл с ошибками строку, увеличили счетчик строк в этом файле
             Dataview.er++;
+            //MessageBox.Show(Dataview.er.ToString());
+            this.Close();
         }
-
+        //обработка добавления нового автора-сотрудника
         private void buttonAddAuth_Click(object sender, RoutedEventArgs e)
         {
             NewEmpl newEmpl = new NewEmpl();
             newEmpl.ShowDialog();
-            
+
+            if (NewEmpl.flagCancel==false) //если была нажата ОТМЕНА, то окно не закрываем 
+                this.Close();
         }
     }
 }

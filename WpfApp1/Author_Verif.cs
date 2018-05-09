@@ -33,7 +33,6 @@ namespace WpfApp1
             DataSet dsEmpl = new DataSet("dip");
             daEmpl.FillSchema(dsEmpl, SchemaType.Source, "[dbo].[Employees]");
             daEmpl.Fill(dsEmpl, "[dbo].[Employees]");
-            //DataTable dtEmplSearch;
             dtEmplSearch = dsEmpl.Tables["[dbo].[Employees]"];
 
 

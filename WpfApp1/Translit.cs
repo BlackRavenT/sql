@@ -35,7 +35,7 @@ namespace WpfApp1
             transliter.Add("т", "t");
             transliter.Add("у", "u");
             transliter.Add("ф", "f");
-            transliter.Add("х", "h");
+            transliter.Add("х", "kh");
             transliter.Add("ц", "c");
             transliter.Add("ч", "ch");
             transliter.Add("ш", "sh");
@@ -68,7 +68,7 @@ namespace WpfApp1
             transliter.Add("Т", "T");
             transliter.Add("У", "U");
             transliter.Add("Ф", "F");
-            transliter.Add("Х", "H");
+            transliter.Add("Х", "Kh");
             transliter.Add("Ц", "C");
             transliter.Add("Ч", "Ch");
             transliter.Add("Ш", "Sh");
@@ -109,8 +109,10 @@ namespace WpfApp1
             daEmpl.Fill(dsEmpl, "[dbo].[Employees]");
             DataTable dtEmpl;
             dtEmpl = dsEmpl.Tables["[dbo].[Employees]"];
+
             if (!flagInit)
                 prepareTranslit();
+
             string sqlUpdate = "UPDATE [dip].[dbo].[Employees] SET translit_name = @newName WHERE empl_name = @cur";
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = conn;
