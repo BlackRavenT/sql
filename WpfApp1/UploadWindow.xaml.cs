@@ -33,8 +33,19 @@ namespace WpfApp1
             conn.Open();
             string sql = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_TYPE != 'VIEW'";
 
-            SqlCommand command = new SqlCommand(sql, conn);           
+            SqlCommand command = new SqlCommand(sql, conn);
 
+            /*DataSet dataEmpl;
+            DataTable tableEmpl;
+
+            string sqlEmpl = "SELECT empl_name FROM [dbo].[Employees]";
+            SqlCommand comEmpl = new SqlCommand(sqlEmpl, conn);
+            SqlDataReader readerEmpl = comEmpl.ExecuteReader();
+            while (readerEmpl.Read())
+            {
+                
+            }
+            */
             try
             {
                 SqlDataReader reader = command.ExecuteReader();
@@ -43,6 +54,7 @@ namespace WpfApp1
                     string table = reader.GetString(0);
                     boxDataTable.Items.Add(table);
                 }
+               
             }
             catch (SqlException ex)
             {
@@ -54,12 +66,6 @@ namespace WpfApp1
         //выбор файла
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            /*OpenFileDialog myDialog = new OpenFileDialog();
-            myDialog.Filter = "Exel Files|*.xls;*.xlsx;*.xlsm";
-            if (myDialog.ShowDialog() == true)
-            {
-                textBox1.Text = myDialog.FileName;
-            }*/
             OpenFileDialog ope = new OpenFileDialog();
             ope.Filter = "Exel Files|*.xls;*.xlsx;*.xlsm";
             if (ope.ShowDialog() == true)
@@ -92,7 +98,6 @@ namespace WpfApp1
             ope.FileName=textBox1.Text;
             
             string excelFilePath = textBox1.Text;
-
             
             string ssqltable = boxDataTable.SelectedItem.ToString();
             string sheet1 = boxListExcel.SelectedItem.ToString();
@@ -112,21 +117,14 @@ namespace WpfApp1
                  // Получаем список листов в файле
                 DataTable schemaTable = oledbconn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
                 string select;
-                // Вычитываем все таблицы
-                //for (int i = 0; i < schemaTable.Rows.Count; i++)
-                //{
-
-                    // Берем название i-ого листа
-                  //  string sheet1 = (string)schemaTable.Rows[i].ItemArray[2];
-                    // Выбираем все данные с листа
-                    //select = String.Format("SELECT * FROM [{0}]", sheet1);
-                    OleDbDataAdapter dataAdapter = new OleDbDataAdapter(myexceldataquery, oledbconn);
-                    UploadWindow.dataTable = new DataTable();
-                    dataAdapter.Fill(UploadWindow.dataTable); // Заполняем таблицу
-                    UploadWindow.dataTable.TableName = sheet1.Substring(0, sheet1.Length - 1); // В конце от Экселя стоит символ '$'
-                    UploadWindow.dataSet.Tables.Add(UploadWindow.dataTable);
-                    Dataview dvWindow = new Dataview();
-                    dvWindow.dataGridView1.ItemsSource = UploadWindow.dataTable.DefaultView;
+              
+                OleDbDataAdapter dataAdapter = new OleDbDataAdapter(myexceldataquery, oledbconn);
+                UploadWindow.dataTable = new DataTable();
+                dataAdapter.Fill(UploadWindow.dataTable); // Заполняем таблицу
+                UploadWindow.dataTable.TableName = sheet1.Substring(0, sheet1.Length - 1); // В конце от Экселя стоит символ '$'
+                UploadWindow.dataSet.Tables.Add(UploadWindow.dataTable);
+                Dataview dvWindow = new Dataview();
+                dvWindow.dataGridView1.ItemsSource = UploadWindow.dataTable.DefaultView;
                     //MessageBox.Show(UploadWindow.dataTable.Rows[2]["Авторы с аффилиациями"].ToString());
             
                 oledbconn.Close();

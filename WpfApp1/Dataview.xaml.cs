@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,16 +15,24 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 
+
 namespace WpfApp1
 {
+     
     /// <summary>
     /// Логика взаимодействия для Dataview.xaml
     /// </summary>
     public partial class Dataview : Window
     {
+        internal static DataTable newDt; //таблица с разделенными по авторам публикациями
+        internal static DataTable errDt; //таблица для публикаций, в ходе обработки которых возникли исключения
+        internal static int er = 0;
+        internal static string AuthVerifName;
+
         public Dataview()
         {
             InitializeComponent();
+            Translit.createTranslitName();
         }
 
         List<string> HseName = new List<string>()
@@ -31,16 +40,18 @@ namespace WpfApp1
                 "Natl Res Univ, Higher Sch Econ",
                 "Natl Univ, Higher Sch Econ, Moscow Inst Elect&Math"
             };
-        //internal static DataSet ds;
-        //internal static DataTable dt;
+
+        
+//предпросмотр добавляемых записей: вывод разбитых по авторам публикаций 
         public void buttonInsert_Click(object sender, RoutedEventArgs e)
         {
             var upWnd = Application.Current.Windows.Cast<Window>().FirstOrDefault(window => window is UploadWindow) as UploadWindow;
             string res = upWnd.boxDataSource.SelectedItem.ToString();
             DataSet ds = UploadWindow.dataSet;
             DataTable dt = UploadWindow.dataTable;
-            DataTable newDt = dt.Clone(); //таблица для обработанных публикаций, разбитых по авторам 
-            DataTable errDt = dt.Clone(); //таблица для публикаций, в ходе обработки которых возникли исключения 
+            newDt = dt.Clone();
+            //DataTable newDt = dt.Clone(); //таблица для обработанных публикаций, разбитых по авторам 
+            errDt = dt.Clone(); //таблица для публикаций, в ходе обработки которых возникли исключения 
 
             int result = -1;
 
@@ -52,7 +63,7 @@ namespace WpfApp1
                 int k = 0;
                 for (int j=0; j<dt.Rows.Count; j++)
                 {
-                    int er = 0; //счетчик строк в файле с ошибками
+                    //int er = 0; //счетчик строк в файле с ошибками
                     //поиск в строке упоминания ВШЭ                       
                     if (dt.Rows[j]["Авторы с аффилиациями"].ToString().IndexOf("Higher") > -1)
                         result = dt.Rows[j]["Авторы с аффилиациями"].ToString().IndexOf("Higher");
@@ -89,7 +100,7 @@ namespace WpfApp1
                         start = 0;
                         end = -1;
                         string person = "";
-                        
+                        //string translit_pers = "";
                         //вытаскиваем по одному автору из набора и добавляем его со всей остальной информацией по публикации в новую таблицу
 
                         for (int i = 0; i < authors.Length; i++)
@@ -109,7 +120,8 @@ namespace WpfApp1
                                     person = person.Substring(0, person.Length-1);
                                 //MessageBox.Show(newDt.Rows[k]["Авторы"].ToString());
                                 newDt.Rows[k]["Авторы"] = person;
-                                //MessageBox.Show(newDt.Rows[k]["Авторы"].ToString());
+                                
+                                MessageBox.Show(newDt.Rows[k]["Авторы"].ToString());
                                 k++;
                             }
                         }
@@ -187,6 +199,34 @@ namespace WpfApp1
                 }
                 dataGridView1.ItemsSource = newDt.DefaultView;
             }
+            
+        }
+        //проверка и добавление новых
+        private void buttonInsertNew_Click(object sender, RoutedEventArgs e)
+        {
+            int i;
+            foreach (DataRow drNewDt in newDt.Rows)
+            {
+                //AuthVerifName = drNewDt["Авторы"].ToString();
+                //i = Author_Verif.CountAuthor(drNewDt["Авторы"].ToString());
+                i = Author_Verif.CountAuthor(drNewDt); //считаем, сколько авторов подходит под маску по текущей строке
+                if (i==0)
+                {
+
+                    Author_0_matches author_view = new Author_0_matches();
+                    
+                    author_view.ShowDialog();
+                }
+                else if (i==1)
+                {
+
+                }
+                else
+                {
+
+                }
+            }
         }
     }
+
 }
