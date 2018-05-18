@@ -134,6 +134,8 @@ namespace WpfApp1
                 {
                     Console.WriteLine(" {0} \t {1}", row["[Название публикации (преобразованное)]"]);
                 }
+
+
                 
                 /*foreach (DataRow drCur in dtWords.Rows)
                 {

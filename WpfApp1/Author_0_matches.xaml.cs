@@ -47,7 +47,7 @@ namespace WpfApp1
         {
             DataRowView row = (DataRowView)dataGridViewAuth_0.SelectedItems[0];
             string s = row["empl_name"].ToString();
-            MessageBox.Show(s);
+            //MessageBox.Show(s);
 
             //тут функция проверки по публикации
             this.Close();

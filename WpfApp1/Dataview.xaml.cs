@@ -209,25 +209,40 @@ namespace WpfApp1
             foreach (DataRow drNewDt in newDt.Rows)
             {
                 AuthVerifName = drNewDt["Авторы"].ToString();
+                bool flag = false; //наличие автора в таблице с ошибками
                 //i = Author_Verif.CountAuthor(drNewDt["Авторы"].ToString());
                 i = Author_Verif.CountAuthor(drNewDt); //считаем, сколько авторов подходит под маску по текущей строке
-                //если не нашли такого автора в таблице сотрудников
-                if (i==0)
-                {
-                    Author_0_matches author_view = new Author_0_matches();
-                    author_view.ShowDialog();
-                }
+                                                       //если не нашли такого автора в таблице сотрудников
                 //если нашли ровно одного подходящего 
-                else if (i==1)
+                if (i == 1)
                 {
                     Publication_Verif.PublVerif(drNewDt);
                     //тут функция проверки публикации
                 }
+                                
                 else
-                //если нашли больше одного
+                //если нашли больше одного или ни одного 
                 {
-                    Author_0_matches author_view = new Author_0_matches();
-                    author_view.ShowDialog();
+                    int j = 0;
+                    while (j<er)
+                    {
+                        if (errDt.Rows[j]["Авторы"].ToString()==AuthVerifName)
+                        {
+                            flag = true;
+                            errDt.ImportRow(drNewDt); //добавили в файл с ошибками строку, увеличили счетчик строк в этом файле
+                            Console.WriteLine(errDt.Rows[er]);
+                            MessageBox.Show(errDt.Rows[j]["Авторы"].ToString());
+                            er++;
+                            break;
+                        }
+                        j++;
+                    }
+                    if (flag==false)
+                    {
+                        Author_0_matches author_view = new Author_0_matches();
+                        author_view.ShowDialog();
+                    }
+                    
                 }
             }
         }
