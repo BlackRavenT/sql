@@ -101,6 +101,10 @@
     <Compile Include="NewEmpl.xaml.cs">
       <DependentUpon>NewEmpl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PublChoose.xaml.cs">
+      <DependentUpon>PublChoose.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Publication_Verif.cs" />
     <Compile Include="Translit.cs" />
     <Compile Include="Dataview.xaml.cs">
       <DependentUpon>Dataview.xaml</DependentUpon>
@@ -132,6 +136,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NewEmpl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PublChoose.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

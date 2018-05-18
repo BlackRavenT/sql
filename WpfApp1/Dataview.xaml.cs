@@ -28,6 +28,7 @@ namespace WpfApp1
         internal static DataTable errDt; //таблица для публикаций, в ходе обработки которых возникли исключения
         internal static int er = 0;
         internal static string AuthVerifName;
+        internal static string res; //строка с выбором типа файла WoS/Scopus
 
         public Dataview()
         {
@@ -46,7 +47,7 @@ namespace WpfApp1
         public void buttonInsert_Click(object sender, RoutedEventArgs e)
         {
             var upWnd = Application.Current.Windows.Cast<Window>().FirstOrDefault(window => window is UploadWindow) as UploadWindow;
-            string res = upWnd.boxDataSource.SelectedItem.ToString();
+            res = upWnd.boxDataSource.SelectedItem.ToString();
             DataSet ds = UploadWindow.dataSet;
             DataTable dt = UploadWindow.dataTable;
             newDt = dt.Clone();
@@ -213,20 +214,19 @@ namespace WpfApp1
                 //если не нашли такого автора в таблице сотрудников
                 if (i==0)
                 {
-
                     Author_0_matches author_view = new Author_0_matches();
-                    
                     author_view.ShowDialog();
                 }
                 //если нашли ровно одного подходящего 
                 else if (i==1)
                 {
+                    Publication_Verif.PublVerif(drNewDt);
                     //тут функция проверки публикации
                 }
                 else
+                //если нашли больше одного
                 {
                     Author_0_matches author_view = new Author_0_matches();
-
                     author_view.ShowDialog();
                 }
             }

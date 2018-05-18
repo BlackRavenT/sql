@@ -116,7 +116,7 @@ namespace WpfApp1
                 oledbconn.Open();
                  // Получаем список листов в файле
                 DataTable schemaTable = oledbconn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
-                string select;
+               
               
                 OleDbDataAdapter dataAdapter = new OleDbDataAdapter(myexceldataquery, oledbconn);
                 UploadWindow.dataTable = new DataTable();
@@ -137,9 +137,7 @@ namespace WpfApp1
             {
                 MessageBox.Show(ex.Message.ToString());
             }
-        }
-        
-
-        
+        }     
+                
     }
 }

@@ -1,0 +1,18 @@
+﻿<Window x:Class="WpfApp1.PublChoose"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="PublChoose"  Height="350" Width="525">
+	<Grid>
+		<Label Content="Вариант, существующий в базе публикаций" HorizontalAlignment="Left" Height="26" Margin="28,10,0,0" VerticalAlignment="Top" Width="461"/>
+		<Label Content="Вариант, полученный из нового файла" HorizontalAlignment="Left" Height="26" Margin="34,136,0,0" VerticalAlignment="Top" Width="455"/>
+		<DataGrid x:Name="dataGridOld" HorizontalAlignment="Left" Height="90" Margin="34,41,0,0" VerticalAlignment="Top" Width="455"/>
+		<DataGrid x:Name="dataGridNew" HorizontalAlignment="Left" Height="90" Margin="34,167,0,0" VerticalAlignment="Top" Width="455"/>
+		<Button x:Name="buttonAddNew" Content="Новый вариант" HorizontalAlignment="Left" Height="27" Margin="349,282,0,0" VerticalAlignment="Top" Width="140" Click="buttonAddNew_Click"/>
+		<Button x:Name="buttonOld" Content="Существующий вариант" HorizontalAlignment="Left" Height="27" Margin="34,282,0,0" VerticalAlignment="Top" Width="140" Click="buttonOld_Click"/>
+
+	</Grid>
+</Window>
