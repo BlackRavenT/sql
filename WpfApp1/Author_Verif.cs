@@ -11,6 +11,23 @@ namespace WpfApp1
         internal static DataTable dtEmplSearch;
         internal static DataRow AuthorRow;
         
+        public static string LastName (string str)
+        {
+            string lastName = "";
+            int i = 0;
+            while (str[i] != ',')
+            {
+                if (str[i]!='\'')
+                {
+                    lastName = lastName + str[i];
+                    i++;
+                }
+            }
+            i++; // пропускаем запятую в строке 
+            lastName = lastName + str[i] + str[i + 1];
+            return lastName;
+        }
+
         public static int CountAuthor (DataRow author)
         {
             AuthorRow = author;
@@ -19,18 +36,13 @@ namespace WpfApp1
             conn.Open();
             string author_name = author["Авторы"].ToString();
             //выделить фамилию
-            string last_name = "";
-            int i = 0;
-            while (author_name[i]!=',')
-            {
-                last_name = last_name + author_name[i];
-                i++;
-            }
-            i++; // пропускаем запятую в строке 
-            last_name = last_name + author_name[i] + author_name[i + 1]; //добавили к строке поиска первую букву имени 
-            string sql = "SELECT * FROM [dip].[dbo].[Employees] WHERE translit_name LIKE '"+ last_name + "%'";
+            string last_name = LastName(author_name);
+            
+            //добавили к строке поиска первую букву имени 
+            string sql = "SELECT * FROM [dip].[dbo].[Employees] WHERE translit_name LIKE '"+ last_name + "%' OR synonym LIKE '%"+ last_name+"%'";
             SqlDataAdapter daEmpl = new SqlDataAdapter(sql, conn);
             DataSet dsEmpl = new DataSet("dip");
+            
             daEmpl.FillSchema(dsEmpl, SchemaType.Source, "[dbo].[Employees]");
             daEmpl.Fill(dsEmpl, "[dbo].[Employees]");
             dtEmplSearch = dsEmpl.Tables["[dbo].[Employees]"];

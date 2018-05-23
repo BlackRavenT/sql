@@ -9,12 +9,12 @@
 	<Grid>
 		<DataGrid x:Name="dataGridViewAuth_0" HorizontalAlignment="Left" Height="97" Margin="28,101,0,0" VerticalAlignment="Top" Width="464"/>
 		<Label Content="В существующем списке не найден данный автор:" HorizontalAlignment="Left" Height="30" Margin="28,10,0,0" VerticalAlignment="Top" Width="464"/>
-		<TextBox x:Name="textBoxAuthName" HorizontalAlignment="Left" Height="22" Margin="28,40,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="300"/>
+		<TextBox x:Name="textBoxAuthName" HorizontalAlignment="Left" Height="22" Margin="28,40,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="300" />
 		<Label Content="Возможно, данный автор упоминался ранее в другом варианте написания:" HorizontalAlignment="Left" Height="29" Margin="28,67,0,0" VerticalAlignment="Top" Width="464"/>
 		<Label Content="В противном случае выберите дальнейшее действие:&#xA;Если данный автор не является сотрудником текущего подразделения, то&#xA; сообщите об ошибке, нажав кнопку &quot;Ошибка&quot;. &#xA;Если автор является сотрудником текущего подразделения, но его нет в базе&#xD;&#xA;данных, нажмите &quot;Добавить&quot; " HorizontalAlignment="Left" Height="95" Margin="28,233,0,0" VerticalAlignment="Top" Width="464"/>
 		<Button x:Name="buttonErrorAuth" Content="Ошибка" HorizontalAlignment="Left" Height="26" Margin="28,333,0,0" VerticalAlignment="Top" Width="127" Click="buttonErrorAuth_Click"/>
-		<Button x:Name="buttonAddAuth" Content="Button" HorizontalAlignment="Left" Height="26" Margin="365,333,0,0" VerticalAlignment="Top" Width="127" Click="buttonAddAuth_Click"/>
-		<Button x:Name="buttonChoose" Content="Button" HorizontalAlignment="Left" Height="25" Margin="350,203,0,0" VerticalAlignment="Top" Width="123" Click="buttonChoose_Click"/>
+		<Button x:Name="buttonAddAuth" Content="Добавить" HorizontalAlignment="Left" Height="26" Margin="365,333,0,0" VerticalAlignment="Top" Width="127" Click="buttonAddAuth_Click"/>
+		<Button x:Name="buttonChoose" Content="Выбрать" HorizontalAlignment="Left" Height="25" Margin="369,203,0,0" VerticalAlignment="Top" Width="123" Click="buttonChoose_Click"/>
 
 	</Grid>
 </Window>

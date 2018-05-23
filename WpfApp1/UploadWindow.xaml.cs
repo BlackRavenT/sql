@@ -18,7 +18,7 @@ namespace WpfApp1
     /// </summary>
     public partial class UploadWindow : System.Windows.Window
     {
-        private Excel.Range xlSheetRange;
+        //private Excel.Range xlSheetRange;
         string dataSource;
         internal static DataSet dataSet;
         internal static DataTable dataTable;
@@ -46,7 +46,7 @@ namespace WpfApp1
                 
             }
             */
-            try
+           /* try
             {
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
@@ -60,7 +60,7 @@ namespace WpfApp1
             {
                 MessageBox.Show("Ошибка:" + ex);
             }
-            conn.Close();
+            conn.Close();*/
             
         }
         //выбор файла
@@ -99,7 +99,7 @@ namespace WpfApp1
             
             string excelFilePath = textBox1.Text;
             
-            string ssqltable = boxDataTable.SelectedItem.ToString();
+            //string ssqltable = boxDataTable.SelectedItem.ToString();
             string sheet1 = boxListExcel.SelectedItem.ToString();
             string myexceldataquery = "select * from [" + boxListExcel.SelectedItem + "$]"; // select * into dbo.tablename - создаст новую таблицу при запросе
 

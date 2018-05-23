@@ -21,9 +21,11 @@ namespace WpfApp1
     /// </summary>
     public partial class Author_0_matches : Window
     {
-        public Author_0_matches()
+        internal static DataRow drCur;
+        public Author_0_matches(DataRow dr)
         {
             InitializeComponent();
+            drCur = dr;
             textBoxAuthName.Text = Dataview.AuthVerifName; //вывести имя автора, которое не найдено в общем списке
 
             string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=dip;Integrated Security=SSPI";
@@ -48,8 +50,26 @@ namespace WpfApp1
             DataRowView row = (DataRowView)dataGridViewAuth_0.SelectedItems[0];
             string s = row["empl_name"].ToString();
             //MessageBox.Show(s);
+            //drCur["Авторы"] = s;
+            string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=dip;Integrated Security=SSPI";
+            SqlConnection conn = new SqlConnection(ssqlconnectionstring);
+            conn.Open();
+
+            string sqlUpdate = "UPDATE [dip].[dbo].[Employees] SET synonym = @syn WHERE empl_name = @s";
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = conn;
+            cmd.CommandText = sqlUpdate;
+
+            string syn = "";
+            syn = row["synonym"].ToString();
+            syn = syn +" "+ Author_Verif.LastName( Dataview.AuthVerifName);
+            cmd.Parameters.Clear();
+            cmd.Parameters.Add("@syn", SqlDbType.NVarChar).Value = syn;
+            cmd.Parameters.Add("@s", SqlDbType.NVarChar).Value = s;
+            int updateRow = cmd.ExecuteNonQuery();
 
             //тут функция проверки по публикации
+            Publication_Verif.PublVerif(drCur, "[dip].[dbo].[Publ]");
             this.Close();
         }
 
@@ -58,6 +78,8 @@ namespace WpfApp1
         {
             Dataview.errDt.ImportRow(Author_Verif.AuthorRow); //добавили в файл с ошибками строку, увеличили счетчик строк в этом файле
             Dataview.er++;
+            Publication_Verif.PublVerif(drCur, "[dip].[dbo].[Error]");
+            //Publication_Verif.InsRow(drCur, "[dip].[dbo].[Error]");
             //MessageBox.Show(Dataview.er.ToString());
             this.Close();
         }

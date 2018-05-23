@@ -35,8 +35,7 @@ namespace WpfApp1
             comboPosition.Items.Add("основная");
             comboPosition.Items.Add("внутр. совмест.");
             comboPosition.Items.Add("ГПД");
-
-
+            comboDepart.Items.Add("Прикладная математика");
         }
 
         private void buttonInsert_Click(object sender, RoutedEventArgs e)
@@ -44,7 +43,7 @@ namespace WpfApp1
             string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=dip;Integrated Security=SSPI";
             SqlConnection conn = new SqlConnection(ssqlconnectionstring);
             conn.Open();
-            string sqlInsert = "INSERT INTO [dip].[dbo].[Employees] (employees_id, empl_name, position, science_degree, translit_name) VALUES (@empl_id, @empl_name, @pos, @deg, @translit)";
+            string sqlInsert = "INSERT INTO [dip].[dbo].[Employees] (employees_id, empl_name, position, department, science_degree, translit_name) VALUES (@empl_id, @empl_name, @pos, @depart, @deg, @translit)";
 
             string sql = "SELECT * FROM [dip].[dbo].[Employees]";
             SqlDataAdapter daEmpl = new SqlDataAdapter(sql, conn);
@@ -59,6 +58,7 @@ namespace WpfApp1
             string pos = comboPosition.SelectedItem.ToString();
             string deg = comboDegree.SelectedItem.ToString();
             string translit_name = textBoxNewTranslitName.Text;
+            string depart = comboDepart.SelectedItem.ToString();
 
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = conn;
@@ -69,9 +69,10 @@ namespace WpfApp1
             cmd.Parameters.Add("@pos", SqlDbType.NVarChar).Value = pos;
             cmd.Parameters.Add("@deg", SqlDbType.NVarChar).Value = deg;
             cmd.Parameters.Add("@translit", SqlDbType.NVarChar).Value = translit_name;
+            cmd.Parameters.Add("@depart", SqlDbType.NVarChar).Value = depart;
 
             int insertRow = cmd.ExecuteNonQuery();
-
+            Publication_Verif.InsRow(Author_0_matches.drCur, "[dip].[dbo].[Publ]");
             this.Close();
             
         }

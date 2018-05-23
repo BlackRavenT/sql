@@ -212,39 +212,59 @@ namespace WpfApp1
                 bool flag = false; //наличие автора в таблице с ошибками
                 //i = Author_Verif.CountAuthor(drNewDt["Авторы"].ToString());
                 i = Author_Verif.CountAuthor(drNewDt); //считаем, сколько авторов подходит под маску по текущей строке
-                                                       //если не нашли такого автора в таблице сотрудников
+
                 //если нашли ровно одного подходящего 
                 if (i == 1)
                 {
-                    Publication_Verif.PublVerif(drNewDt);
+                    Publication_Verif.PublVerif(drNewDt, "[dip].[dbo].[Publ]");
                     //тут функция проверки публикации
                 }
                                 
                 else
                 //если нашли больше одного или ни одного 
                 {
+                    string ssqlconnectionstring = "Data Source=LAPTOP-LCJH6N9V;Initial Catalog=dip;Integrated Security=SSPI";
+                    SqlConnection conn = new SqlConnection(ssqlconnectionstring);
+                    conn.Open();
+                    string publicName = Publication_Verif.UpdatePublName(drNewDt["Название публикации"].ToString());
+                    string sql = "SELECT * FROM  [dip].[dbo].[Error] ";
+                    SqlDataAdapter daErr = new SqlDataAdapter(sql, conn);
+                    DataSet dsErr = new DataSet("errors");
+                    daErr.FillSchema(dsErr, SchemaType.Source, "[dip].[dbo].[Error]");
+                    daErr.Fill(dsErr, "[dip].[dbo].[Error]");
+                    DataTable dtErr;
+                    dtErr = dsErr.Tables["[dip].[dbo].[Error]"];
+
+
                     int j = 0;
-                    while (j<er)
+                    while (j<dtErr.Rows.Count)
                     {
-                        if (errDt.Rows[j]["Авторы"].ToString()==AuthVerifName)
+                        if (dtErr.Rows[j]["Авторы"].ToString()==AuthVerifName)
                         {
+                            Publication_Verif.PublVerif(drNewDt, "[dip].[dbo].[Error]");
                             flag = true;
                             errDt.ImportRow(drNewDt); //добавили в файл с ошибками строку, увеличили счетчик строк в этом файле
-                            Console.WriteLine(errDt.Rows[er]);
-                            MessageBox.Show(errDt.Rows[j]["Авторы"].ToString());
+                            //Console.WriteLine(errDt.Rows[er]);
+                            //MessageBox.Show(dtErr.Rows[j]["Авторы"].ToString());
                             er++;
+
+                            //Publication_Verif.InsRow(drNewDt, "[dip].[dbo].[Error]");
+
+
                             break;
                         }
                         j++;
                     }
                     if (flag==false)
                     {
-                        Author_0_matches author_view = new Author_0_matches();
+                        Author_0_matches author_view = new Author_0_matches(drNewDt);
                         author_view.ShowDialog();
                     }
                     
                 }
             }
+            MessageBox.Show("Данные загружены");
+            this.Close();
         }
     }
 

@@ -8,7 +8,7 @@
         Title="Создание карточки сотрудника" Height="350" Width="525">
 	<Grid>
 		<Label Content="Введите ФИО полностью, без сокращений:" HorizontalAlignment="Left" Height="27" Margin="10,10,0,0" VerticalAlignment="Top" Width="362"/>
-		<TextBox x:Name="textBoxNewName" HorizontalAlignment="Left" Height="24" Margin="10,42,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="362"/>
+		<TextBox x:Name="textBoxNewTranslitName" HorizontalAlignment="Left" Height="24" Margin="10,42,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="362"/>
 		<Button x:Name="buttonInsert" Content="Добавить" HorizontalAlignment="Left" Height="35" Margin="372,274,0,0" VerticalAlignment="Top" Width="135" Click="buttonInsert_Click"/>
 		<Button x:Name="buttonCancel" Content="Отменить" HorizontalAlignment="Left" Height="35" Margin="10,274,0,0" VerticalAlignment="Top" Width="135" Click="buttonCancel_Click"/>
 		<Label Content="Должность:" HorizontalAlignment="Left" Height="27" Margin="10,134,0,0" VerticalAlignment="Top" Width="362"/>
@@ -16,7 +16,9 @@
 		<Label Content="Вид совместительства:" HorizontalAlignment="Left" Height="27" Margin="10,194,0,0" VerticalAlignment="Top" Width="362"/>
 		<ComboBox x:Name="comboPosition" HorizontalAlignment="Left" Height="23" Margin="10,226,0,0" VerticalAlignment="Top" Width="223"/>
 		<Label Content="Введите ФИО латинскими буквами:" HorizontalAlignment="Left" Height="27" Margin="10,78,0,0" VerticalAlignment="Top" Width="362"/>
-		<TextBox x:Name="textBoxNewTranslitName" HorizontalAlignment="Left" Height="24" Margin="10,110,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="362"/>
+		<TextBox x:Name="textBoxNewName" HorizontalAlignment="Left" Height="24" Margin="10,110,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="362"/>
+		<Label Content="Департамент:" HorizontalAlignment="Left" Height="27" Margin="272,139,-48,0" VerticalAlignment="Top" Width="293"/>
+		<ComboBox x:Name="comboDepart" HorizontalAlignment="Left" Height="23" Margin="272,166,0,0" VerticalAlignment="Top" Width="180"/>
 
 	</Grid>
 </Window>
