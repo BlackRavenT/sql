@@ -98,6 +98,10 @@
       <DependentUpon>Author_0_matches.xaml</DependentUpon>
     </Compile>
     <Compile Include="Author_Verif.cs" />
+    <Compile Include="KPI_PA.xaml.cs">
+      <DependentUpon>KPI_PA.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow\MainWindowViewModel\ViewModelMainWindow.cs" />
     <Compile Include="NewEmpl.xaml.cs">
       <DependentUpon>NewEmpl.xaml</DependentUpon>
     </Compile>
@@ -112,6 +116,7 @@
     <Compile Include="UploadWindow.xaml.cs">
       <DependentUpon>UploadWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewShower.cs" />
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
@@ -123,7 +128,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="KPI_PA.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow\MainWindowView\ViewMainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -131,8 +140,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="MainWindow\MainWindowView\ViewMainWindow.xaml.cs">
+      <DependentUpon>ViewMainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NewEmpl.xaml">
@@ -206,6 +215,15 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MainWindow\MainWindowModel\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ViewEmpl\ViewEmpl.csproj">
+      <Project>{1c4cee72-d14c-4cdb-80fb-e2ec59782d49}</Project>
+      <Name>ViewEmpl</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

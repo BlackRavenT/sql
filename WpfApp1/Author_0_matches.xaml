@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Author_0_matches" Height="400" Width="525">
+        Title="Дополнительная проверка" Height="400" Width="525">
 	<Grid>
 		<DataGrid x:Name="dataGridViewAuth_0" HorizontalAlignment="Left" Height="97" Margin="28,101,0,0" VerticalAlignment="Top" Width="464"/>
 		<Label Content="В существующем списке не найден данный автор:" HorizontalAlignment="Left" Height="30" Margin="28,10,0,0" VerticalAlignment="Top" Width="464"/>

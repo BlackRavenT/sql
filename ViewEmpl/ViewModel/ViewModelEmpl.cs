@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ViewEmpl.Model;
@@ -13,7 +14,6 @@ namespace ViewEmpl.ViewModel
     public class ViewModelEmpl 
     {
         public ObservableCollection<ModelEmpl> Employees { get; set; }
-        public ObservableCollection<ModelEmpl> ModelEmpls = new ObservableCollection<ModelEmpl>();
 
 
         public ViewModelEmpl()
@@ -26,8 +26,8 @@ namespace ViewEmpl.ViewModel
             SqlCommand comm = conn.CreateCommand();
             comm.CommandType = CommandType.StoredProcedure;
             comm.CommandText = "view_empl";
-            DataTable dt = new DataTable();
-            dt.Load(comm.ExecuteReader());
+            //DataTable dt = new DataTable();
+            //dt.Load(comm.ExecuteReader());
 
             SqlDataReader reader = comm.ExecuteReader();
 
@@ -37,7 +37,7 @@ namespace ViewEmpl.ViewModel
                 {
                     try
                     {
-                        Employees.Add(new ModelEmpl { EmplName = (string)reader.GetValue(0), ScienceDegree = (string)reader.GetValue(1), Hours = (double)reader.GetValue(2) });
+                        Employees.Add(new ModelEmpl { EmplName = (string)reader.GetValue(0), Department = (string)reader.GetValue(1), ScienceDegree = (string)reader.GetValue(2), Hours = (double)reader.GetValue(3) });
 
                     }
                     catch (Exception e)
@@ -45,8 +45,6 @@ namespace ViewEmpl.ViewModel
                         Console.WriteLine(e);
                         throw;
                     }
-                    //new ModelEmpl {EmplName = (string)reader.GetValue(0),ScienceDegree = (string)reader.GetValue(1),Hours = (double)reader.GetValue(2) };
-                    //Employees.Add(new ModelEmpl((string)reader.GetValue(0), (string)reader.GetValue(1), (string)reader.GetValue(2), (int)reader.GetValue(3)));
                 }
             }
         }

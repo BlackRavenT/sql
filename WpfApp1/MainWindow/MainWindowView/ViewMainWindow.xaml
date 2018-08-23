@@ -1,0 +1,28 @@
+﻿<Window x:Class="WpfApp1.ViewMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="Анализ KPI НИУ ВШЭ" Height="350" Width="525">
+	<Grid>
+		<Menu Margin="0,0,0,289">
+			<MenuItem Header="Данные">
+				<MenuItem Header="Ручной ввод">
+					<MenuItem Header="Добавление нового сотрудника"></MenuItem>
+					<MenuItem Header="Редактирование существующего сотрудника"></MenuItem>
+				</MenuItem>
+				<MenuItem Header="Загрузка данных в БД" Click="MenuItem_Click"></MenuItem>
+				<MenuItem Header="Выгрузка данных из БД" Click="MenuItem_Click_1"></MenuItem>
+			</MenuItem>
+			<MenuItem Header="Просмотр">
+				<MenuItem Header="Просмотр списка сотрудников" Command="{Binding ViewEmplButton}" CommandParameter="{Binding}"></MenuItem>
+			</MenuItem>
+			<MenuItem Header="KPI">
+				<MenuItem Header="Оценка публикационной активности" Click="MenuItem_Click_2"></MenuItem>
+			</MenuItem>
+		</Menu>
+		<Label Content="Добро пожаловать в систему &quot;Анализ KPI НИУ ВШЭ&quot;&#xD;&#xA;&#xD;&#xA;Выберите необходимое действие " HorizontalAlignment="Center" Height="69" Margin="126,79,49,0" VerticalAlignment="Top" Width="342"/>
+	</Grid>
+</Window>

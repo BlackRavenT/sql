@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+//using WpfApp1.MainWindow.MainWindowViewModel;
 using Excel = Microsoft.Office.Interop.Excel;
 
 
@@ -26,18 +27,14 @@ namespace WpfApp1
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : System.Windows.Window
+    public partial class ViewMainWindow : System.Windows.Window
     {
         private Range xlSheetRange;
 
-        // private Excel.Application xlApp;
-        // private Worksheet xlSheet;
-
-        public MainWindow()
+        public ViewMainWindow()
         {
             InitializeComponent();
-            
-           
+            this.DataContext = new ViewModelMainWindow();
         }
         
 
@@ -53,6 +50,12 @@ namespace WpfApp1
         {
             Window1 dwWindow = new Window1();
             dwWindow.Show();
+        }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            KPI_PA kpiWindow = new KPI_PA();
+            kpiWindow.Show();
         }
     }
     

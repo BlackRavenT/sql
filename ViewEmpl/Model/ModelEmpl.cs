@@ -24,6 +24,17 @@ namespace ViewEmpl.Model
             }
         }
 
+        private string department;
+        public string Department
+        {
+            get { return department; }
+            set
+            {
+                department = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private string scienceDegree;
 
         public string ScienceDegree

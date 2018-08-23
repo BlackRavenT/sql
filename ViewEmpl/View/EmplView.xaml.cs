@@ -19,9 +19,9 @@ namespace ViewEmpl
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class EmplView : Window
     {
-        public MainWindow()
+        public EmplView()
         {
             InitializeComponent();
             DataContext = new ViewModelEmpl();

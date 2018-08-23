@@ -57,7 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="View\ViewEmpl.xaml">
+    <Page Include="View\EmplView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -65,11 +65,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CodeFile1.cs" />
     <Compile Include="Model\BaseNotifyClass.cs" />
     <Compile Include="Model\ModelEmpl.cs" />
+    <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModel\ViewModelEmpl.cs" />
-    <Compile Include="View\ViewEmpl.xaml.cs">
-      <DependentUpon>ViewEmpl.xaml</DependentUpon>
+    <Compile Include="View\EmplView.xaml.cs">
+      <DependentUpon>EmplView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
